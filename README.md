@@ -67,4 +67,4 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-Built with ⚡ by Vishal Singh
+Built by Vishal Singh

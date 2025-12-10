@@ -670,6 +670,26 @@ button {
     line-height: 1.7;
 }
 
+.chain-logos {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.chain-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    object-fit: contain;
+    opacity: 0.7;
+    transition: all var(--transition-fast);
+}
+
+.chain-logo:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
 .skills-section {
     text-align: center;
 }
