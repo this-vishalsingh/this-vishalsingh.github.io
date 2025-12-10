@@ -1127,6 +1127,14 @@ button {
     transform: translateY(-4px);
 }
 
+.platform-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
 .platform-name {
     font-size: 1.1rem;
     font-weight: 600;
