@@ -861,29 +861,11 @@ button {
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
     transition: all var(--transition-base);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
 }
 
 .audit-card:hover {
     border-color: var(--color-border-hover);
     background: var(--color-bg-card-hover);
-}
-
-.audit-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-md);
-    object-fit: cover;
-    flex-shrink: 0;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
-}
-
-.audit-info {
-    flex: 1;
-    min-width: 0;
 }
 
 .audit-header {
