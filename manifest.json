@@ -1,0 +1,16 @@
+{
+    "name": "Vishal Singh",
+    "short_name": "VS",
+    "description": "ZK & Smart Contract Security Researcher",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#00d4ff",
+    "icons": [
+        {
+            "src": "profile.jpg",
+            "sizes": "any",
+            "type": "image/jpeg"
+        }
+    ]
+}
