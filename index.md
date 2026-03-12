@@ -108,9 +108,7 @@ Interested in a **private security audit** or have a question? Feel free to reac
 - **Email:** [josselin@seceureka.com](mailto:josselin@seceureka.com)  
 - **Telegram:** [@montyly](https://t.me/montyly)  
 - **Twitter:** [@montyly](https://x.com/Montyly)
-- **Book a call (consulting or business):** [30 min call](https://calendar.app.google/uyV1CaY5pLF5z7baA) 
-
-Want to talk security, tooling ideas, career growth, or just have a casual chat? Book a [coffee call](https://calendar.app.google/3XYr7MsSyekpzTn2A) with me.
+- **Book a call:** [30 min call](https://calendar.app.google/uyV1CaY5pLF5z7baA) 
 
 ---
 *Content last updated January 2026.*
