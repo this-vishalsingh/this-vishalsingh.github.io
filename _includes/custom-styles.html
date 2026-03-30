@@ -1,0 +1,269 @@
+<style>
+/* Hide unnecessary theme elements */
+.github-banner, .github-badge, 
+a[href*="github.com"][class*="button"], .btn-github, 
+#forkme_banner, #forkme_banner_wrap, a#forkme_banner,
+.maintained-by, .credits,
+footer p:contains("maintained by"),
+footer p:contains("Published with") {
+  display: none !important;
+}
+
+/* Base Styles & Typography */
+body {
+  background: #f2f2f2 !important;
+  color: #373737 !important;
+  font-family: 'Literata', 'Georgia', serif !important;
+  line-height: 1.6 !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+#header_wrap {
+  background: #212121 !important;
+  padding: 50px 0 40px 0 !important;
+  color: white !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+#project_title {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 36px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  color: white !important;
+  text-shadow: none !important;
+  margin-bottom: 8px !important;
+}
+
+#project_tagline {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 300 !important;
+  color: rgba(255,255,255,0.8) !important;
+  text-shadow: none !important;
+}
+
+.header-avatar {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50% !important;
+  border: 2px solid rgba(255,255,255,0.2) !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+  flex-shrink: 0 !important;
+  object-fit: cover !important;
+  background: #ffffff !important; /* Base for transparent images */
+}
+
+@media (max-width: 480px) {
+  .header-branding {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 15px !important;
+  }
+  
+  .header-avatar {
+    width: 56px !important;
+    height: 56px !important;
+  }
+}
+
+/* Inner content area */
+#main_content_wrap {
+  background: #f2f2f2 !important;
+  border: none !important;
+}
+
+#main_content {
+  background: #ffffff !important;
+  color: #333333 !important;
+  max-width: 640px !important;
+  padding: 60px 80px !important;
+  margin: 40px auto !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+  border-radius: 4px !important;
+}
+
+/* Headings */
+#main_content h1, #main_content h2, #main_content h3 {
+  font-family: 'Inter', sans-serif !important;
+  color: #111111 !important;
+  letter-spacing: -0.01em !important;
+}
+
+#main_content h1 {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  margin-top: 0 !important;
+  margin-bottom: 30px !important;
+  border: none !important;
+}
+
+#main_content h2 {
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-top: 40px !important;
+  margin-bottom: 20px !important;
+  border-bottom: 1px solid #eee !important;
+  padding-bottom: 8px !important;
+  background: none !important;
+}
+
+#main_content h3 {
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  margin-top: 30px !important;
+  margin-bottom: 12px !important;
+  border: none !important;
+}
+
+#main_content p, #main_content li {
+  font-size: 17px !important;
+  margin-bottom: 1.25rem !important;
+}
+
+#main_content a {
+  color: #1e6bb8 !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-bottom 0.2s ease !important;
+}
+
+#main_content a:hover {
+  text-decoration: none !important;
+  border-bottom: 1px solid #1e6bb8 !important;
+}
+
+/* Minimalist Horizontal Navigation */
+.nav-tabs {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  margin-bottom: 3rem !important;
+  padding: 0 0 20px 0 !important;
+  border-bottom: 1px solid #eee !important;
+  list-style: none !important;
+  gap: 20px !important;
+}
+
+.nav-item-wrapper {
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  position: relative !important;
+}
+
+.nav-link {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #666 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.nav-item-wrapper:hover .nav-link {
+  color: #111 !important;
+}
+
+.nav-item-wrapper.active .nav-link {
+  color: #1e6bb8 !important;
+}
+
+.nav-item-wrapper.active:after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: -21px !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: #1e6bb8 !important;
+}
+
+/* Hide navigation taglines completely */
+.nav-tagline {
+  display: none !important;
+}
+
+/* Table and Code styles */
+table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin-bottom: 30px !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
+#main_content th, #main_content td {
+  font-family: 'Inter', sans-serif !important;
+}
+
+#main_content a[target="_blank"]::after {
+  content: " ↗";
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+th {
+  background: #fafafa !important;
+  color: #111 !important;
+  font-weight: 600 !important;
+  padding: 12px !important;
+  border: 1px solid #eee !important;
+  text-align: left !important;
+}
+
+td {
+  padding: 12px !important;
+  border: 1px solid #eee !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #main_content {
+    max-width: 100% !important;
+    padding: 30px 20px !important;
+    margin: 10px auto !important;
+    border-radius: 0 !important;
+  }
+  
+  .nav-tabs {
+    gap: 15px !important;
+    justify-content: flex-start !important;
+    margin-bottom: 2rem !important;
+    padding-bottom: 12px !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important; /* Hide scrollbar for clean look in Firefox */
+  }
+  
+  .nav-tabs::-webkit-scrollbar {
+    display: none !important; /* Hide scrollbar for clean look in Chrome/Safari */
+  }
+
+  .nav-item-wrapper {
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link {
+    font-size: 13px !important;
+  }
+  
+  #main_content {
+    padding: 25px 15px !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const links = document.querySelectorAll('#main_content a');
+  links.forEach(link => {
+    if (link.hostname && link.hostname !== window.location.hostname) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+});
+</script>

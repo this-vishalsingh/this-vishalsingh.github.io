@@ -1,114 +1,74 @@
 ---
 layout: default
-title: Josselin Feist
+title: Home
+active: home
 ---
 
-<style>
-.nav-tabs {
-  display: flex;
-  margin-bottom: 1.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: 0.95em;
-  overflow: hidden;
-  width: fit-content;
-}
-
-.nav-tabs a {
-  padding: 8px 16px;
-  text-decoration: none;
-  color: #0366d6;
-  background: #f8f8f8;
-  border-right: 1px solid #ccc;
-  flex: 1;
-  text-align: center;
-}
-
-.nav-tabs a:last-child {
-  border-right: none;
-}
-
-.nav-tabs a.active {
-  background: white;
-  font-weight: bold;
-}
-</style>
-
-<div class="nav-tabs">
-  <a href="/" class="active">Home</a>
-  <a href="/blog">Blog</a>
-  <a href="/talks/">Talks</a>
-  <a href="/portfolio/">Portfolio</a>
-  <a href="/about/">About</a>
-</div>
-
-
----
-
-*Former Trail of Bits Engineering Director – Author of Slither*
+### Core Contributor at [ZippelLabs](https://zippellabs.github.io/) - [ZP1](https://github.com/ZippelLabs/ZP1) zkVM
 
 ---
 
 ## Profile
 
-I'm a seasoned information security expert with over a decade of experience, including **8+ years focused on blockchain security**. Until 2025, I was the Engineering Director of the Blockchain team at Trail of Bits, where I led reviews of some of the most critical systems in the space. I've recently transitioned to independent consulting and am now **available for private blockchain security reviews**.
+I’m a blockchain security engineer with 2+ years of experience.
 
-I specialize in securing both cutting-edge DeFi applications and the core blockchain components.
+**[ZippelLabs](https://zippellabs.github.io/)** is the name I use for my cryptography research work. I focus on Zero-Knowledge Proofs, zero-knowledge Virtual Machines, and privacy protocols. I’m drawn to problems that resist easy explanations and require sustained technical engagement.
 
-- **Deep DeFi Expertise:** I've reviewed AMMs, stablecoins, lending platforms, vaults, and liquid (re)staking systems.
-- **Core Blockchain Protocols:** I have deep experience auditing L1 and L2 systems, rollups, bridges, consensus, and messaging layers.
-- **Multi-Language Security Expertise:** I'm highly proficient in **Solidity**, **Yul**, **Rust**, and **Go**, with years of hands-on auditing and development experience.
-- **Alt-Chain Experience:** I've also worked on protocols like Move, Solana, Cosmos, Polkadot, and Algorand, adapting my methods to their unique architectures.
+I am most effective when working with systems that are new, unconventional, or pushing the boundaries of what has been done before:
+
+- **Finding deep, design-level bugs** that aren’t caught by standard checklists or automated tools.
+- **Auditing novel, high-risk protocols** where there is little precedent or existing research.
+- **Helping teams mature their security practices**, from foundational architecture to ongoing advisory.
+
+---
 
 ## Notable Security Review Outcomes
 
-Over the years, I've had the opportunity to lead or contribute to security reviews that uncovered critical issues and helped shape best practices across the blockchain space:
+- **[redacted]** (zkVM) — **1 Critical** : Soundness impact identified in core proof verification logic. ⚡
+- **[redacted]** (FHE) — **1 High** : Vulnerability in ciphertext rotation and noise management. 🔐
+- **leanEthereum / leanMultisig (zkVM)** — **[1 High, 2 Medium](/blog/lean-multisig-bugs/)** : Deciphered critical **Transcript Collisions (H-4)** in Fiat-Shamir backend through Zero-Padded Scalar Absorption. ⚡
+- **GOATNetwork** — **1 High** : Identified logic flaw in **Slash Fraction calculation** allowing negative slashing, validator inflation, and token siphoning. 🛡️
+- **RadicalxChange** — **3rd Rank** <img width="15" height="15" alt="image" src="https://github.com/user-attachments/assets/b5634942-f69e-4f15-a23d-8297b7009e0f" style="vertical-align: middle;" /> : [Highest bidder can withdraw his collateral](https://github.com/sherlock-audit/2024-02-radicalxchange-judging/issues/93) due to a missing check. 🏆
+- **Sorella Angstrom** — **4th Rank** (Patrol team) : [Fees can be stolen by changing the initialized ticks](https://cantina.xyz/code/84df57a3-0526-49b8-a7c5-334888f43940/overview/leaderboard) 🎯
+- **Geneius Contracts** — **6th Rank** : [DoS in Solana via order_hash collision](https://cantina.xyz/code/12acc80c-4e4c-4081-a0a3-faa92150651a/overview/leaderboard) during filling orders. 🛠️
+- **Nitro-Labs/Solaxy** — **8th Rank** : [Stale owner index lets attackers create “ghost” programs](https://cantina.xyz/code/50d38b86-80a0-49af-9df8-70d7d601b7d7/overview/leaderboard) and exhaust resources. 👻
+- **Napier** — **9th Rank** : [Loss of funds due to not collecting fees](https://github.com/sherlock-audit/2024-06-new-scope-judging/issues/364) during integration. 💸
+- **FarcasterAttestation** — **16th Rank** : [The lack of ERC-165 compliance](https://cantina.xyz/code/f9326d2b-bb99-45a9-88c5-94c54aa1823a/overview/leaderboard) leads to integration failures. 🔗
 
-- **Upgradeability Anti-Patterns:** I wrote a series of blog posts on smart contract upgrade risks, including [*“Contract upgrade anti-patterns”*](https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/) and [*“Good idea, bad design: How the Diamond standard falls short”*](https://blog.trailofbits.com/2020/10/30/good-idea-bad-design-how-the-diamond-standard-falls-short/). These articles aim to help developers avoid common pitfalls when designing upgradable smart contracts.
-- **Critical Aave Upgradeability Bug:** I discovered a severe vulnerability in [Aave's upgradeable proxy contracts](https://blog.trailofbits.com/2020/12/16/breaking-aave-upgradeability/) that could have “broken” Aave and affected multiple integrated DeFi protocols. This issue was the result of extensive research I conducted into upgrade mechanisms and proxy design.
-- **Arbitrum Nitro L2 Security Review:** I led the audit of [**Arbitrum Nitro**](https://docs.arbitrum.io/assets/files/2022_03_14_trail_of_bits_security_audit_nitro_1_of_2-d777111730bd602222978f7d98713d40.pdf), a complex Ethereum Layer-2 rollup. The review involved deep analysis of the L2 state transition function, fraud proofs, and bridging logic.
-- **Tezos Message-Passing Vulnerability:** I identified and publicly documented critical flaws in Tezos's [message-passing model](https://forum.tezosagora.org/t/smart-contract-vulnerabilities-due-to-tezos-message-passing-architecture/2045). This included issues like callback authorization bypass and call injection—bugs that hadn't been previously identified in the ecosystem.
-- **Balancer V2 Audit:** As the lead reviewer of Balancer's V2 codebase, I performed an [in-depth analysis of numerical precision issues](https://github.com/trailofbits/publications/blob/master/reviews/2021-04-balancer-balancerv2-securityreview.pdf) and authored **Appendix H**, which covered rounding error impacts. This work directly influenced safer arithmetic practices within the protocol.
+*See the [Audits](/audits/) tab for a full list of security reviews.*
 
-*See the [Portfolio](/portfolio/) tab for a full list of public security reviews.*
+---
 
 ## Open Source & Research
 
-Beyond audits, I've spent years building tools that help the broader security community and advancing research in program analysis.
+- **[ZP1](https://github.com/ZippelLabs/ZP1)** — Core contributor to the **ZippelLabs zkVM**, focusing on proof generation performance and verifier security. 🧱
+- **[Circom](https://github.com/this-vishalsingh/Circom-Security) / [Cairo](https://github.com/this-vishalsingh/Cairo-Security) Security** — Building comprehensive databases of vulnerability patterns for ZK circuits and STARK systems. 🕵️‍♂️
+- **[zkVM-Security](https://github.com/this-vishalsingh/zkVM-Security)** — Comprehensive security analysis and vulnerability patterns for Zero-Knowledge virtual machines. ⚙️
+- **[FHE-Security](https://github.com/this-vishalsingh/FHE-Security)** — Research notes on Fully Homomorphic Encryption implementation pitfalls and security checklists. 🔐
+- **[ZKP-Audits-0xide](https://github.com/this-vishalsingh/ZKP-Audits-0xide)** — A specialized framework for auditing Zero-Knowledge Proof systems and cryptographic primitives. 🗺️
+- **[ZSentinel](https://github.com/this-vishalsingh/ZSentinel)** — Real-time security monitoring and alerting for persistent ZK proof systems. 📡
+- **[SuperAudit](https://github.com/SuperAudit/SuperAudit-Plugin)** — Next-generation AI Security Agent designed for automated vulnerability discovery. 🤖
 
-- **Slither:** I created [**Slither**](https://github.com/crytic/slither), the leading static analysis framework for Ethereum smart contracts. It's widely used to detect vulnerabilities and weaknesses in Solidity and Vyper code, helping auditors, developers, and protocol teams improve their security posture.
-- **Security Tools:** I've developed other open-source tools such as [*Tealer*](https://github.com/crytic/tealer), a static analyzer for Algorand's TEAL smart contracts, and [*RoundMe*](https://github.com/crytic/roundme), a toolkit for identifying rounding errors in smart contract arithmetic.
-- **Academic Background:** I hold a **Ph.D. in program analysis for security**, which has shaped my systematic approach to auditing and building security tools grounded in theory and proven techniques.
-
-## Philosophy & Approach
-
-**"Securing systems at the edge of innovation—driven by curiosity, grounded in rigor".**
-
-What drives me is the challenge of uncovering non-obvious flaws in complex systems. I'm energized by deep technical puzzles, subtle inconsistencies, and the opportunity to explore areas that have not been thoroughly examined before.
-
-*See the [About](/about/) to read more about my approach.*
+*Explore the [Research](/research/) and [Development](/development/) tabs for more tools.*
 
 ---
 
 ## What I Work On
 
-I am most effective when working with systems that are new, unconventional, or pushing the boundaries of what has been done before.
+- **Smart Contract Security** — Comprehensive reviews of **AMM, Lending protocols, Vaults**, and **Liquid Staking** systems to ensure multi-million dollar TVL remains secure. 🔐
+- **Blockchain Infrastructure** — Auditing of **L1/L2 systems, Rollups, Bridges**, and **zkVMs**, focusing on both implementation and cryptographic integrity. 🏗️
+- **Zero-Knowledge Proofs (ZKP)** — Expertise in securing **Circom, Cairo, and Noir** circuits, as well as core components like **Fiat-Shamir transcripts** and **Polynomial Commitments**. 🧙‍♂️
+- **Multi-Chain Resilience** — Extensive experience securing protocols across **Ethereum, Solana, and Cosmos**, adapting security mental models to diverse execution environments. 🌐
 
-- **Finding deep, design-level bugs** that aren't caught by standard checklists or automated tools.
-- **Auditing novel, high-risk protocols** where there is little precedent or existing research.
-- **Helping teams mature their security practices**, from foundational architecture to ongoing advisory. I created the [Blockchain Security Maturity Model](https://blog.trailofbits.com/2023/07/14/evaluating-blockchain-security-maturity/) to guide teams in building long-term resilience.
+---
 
-I don't just deliver reports. I help teams build stronger systems.
+*Content last updated March 2026.*
 
 ## Contact
 
-Interested in a **private security audit** or have a question? Feel free to reach out:
+Interested in discussing ZK security, private audits, or research? 
 
-- **Email:** [josselin@seceureka.com](mailto:josselin@seceureka.com)  
-- **Telegram:** [@montyly](https://t.me/montyly)  
-- **Twitter:** [@montyly](https://x.com/Montyly)
-- **Book a call:** [30 min call](https://calendar.app.google/uyV1CaY5pLF5z7baA) 
-
----
-*Content last updated January 2026.*
+- **Email:** [thisvishalsingh@gmail.com](mailto:thisvishalsingh@gmail.com)
+- **Telegram:** [@thisvishalsingh](https://t.me/thisvishalsingh)
+- **X/Twitter:** [@thisvishalsingh](https://x.com/thisvishalsingh)
+- **Book a call:** [30 min call](https://calendar.app.google/T47tbEv9ta2D1gws5)
