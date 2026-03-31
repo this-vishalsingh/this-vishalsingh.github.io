@@ -1,6 +1,6 @@
 ---
 layout: default
-title: I Found Three Bugs in leanMultisig's Fiat-Shamir Backend
+title: Breaking LeanMultisig zkVM Shamir (Part 1)
 permalink: /blog/lean-multisig-bugs/
 active: blog
 ---
@@ -51,11 +51,12 @@ active: blog
 }
 
 .hf-post .hero {
-  background: var(--ink);
-  color: #eef0f4;
+  background: var(--page);
+  color: var(--ink);
   padding: 72px 40px 64px;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid var(--border);
 }
 .hf-post .hero::before {
   content: '';
@@ -63,7 +64,7 @@ active: blog
   inset: 0;
   background: repeating-linear-gradient(
     0deg, transparent, transparent 39px,
-    rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px
+    rgba(0,0,0,0.02) 39px, rgba(0,0,0,0.02) 40px
   );
   pointer-events: none;
 }
@@ -80,9 +81,9 @@ active: blog
   padding: 4px 10px;
   border-radius: 3px;
 }
-.hf-post .htag-red    { background: rgba(192,57,43,0.3);  color: #ff8a7a; border: 1px solid rgba(192,57,43,0.5); }
-.hf-post .htag-blue   { background: rgba(44,123,181,0.2); color: #7ab8e8; border: 1px solid rgba(44,123,181,0.4); }
-.hf-post .htag-yellow { background: rgba(232,255,107,0.12); color: #e8ff6b; border: 1px solid rgba(232,255,107,0.3); }
+.hf-post .htag-red    { background: rgba(192,57,43,0.1);  color: var(--accent); border: 1px solid rgba(192,57,43,0.2); }
+.hf-post .htag-blue   { background: rgba(44,123,181,0.1); color: var(--accent2); border: 1px solid rgba(44,123,181,0.2); }
+.hf-post .htag-yellow { background: rgba(184,134,11,0.1); color: #8b6508; border: 1px solid rgba(184,134,11,0.2); }
 
 .hf-post .hero h1 {
   font-family: 'Lora', serif;
@@ -90,13 +91,13 @@ active: blog
   line-height: 1.2;
   font-weight: 600;
   margin-bottom: 24px;
-  color: #f0ece4;
+  color: var(--bright);
   border: none !important;
 }
 .hf-post .hero .lede {
   font-family: 'Outfit', sans-serif;
   font-size: 17px;
-  color: #9a9590;
+  color: var(--muted);
   line-height: 1.65;
   max-width: 640px;
   margin-bottom: 36px;
@@ -108,7 +109,7 @@ active: blog
   gap: 20px;
   font-family: 'Outfit', sans-serif;
   font-size: 13px;
-  color: #666;
+  color: var(--muted);
   flex-wrap: wrap;
 }
 .hf-post .hero-meta .ava {
@@ -370,15 +371,8 @@ active: blog
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-tags">
-      <span class="htag htag-red">H-4 · High</span>
-      <span class="htag htag-blue">M-1 · Medium</span>
-      <span class="htag htag-blue">M-2 · Medium</span>
-      <span class="htag htag-yellow">Fiat-Shamir</span>
-      <span class="htag htag-yellow">ZK Security</span>
-    </div>
 
-    <h1>I Found Three Bugs in leanMultisig's Fiat-Shamir Backend</h1>
+    <h1>Breaking LeanMultisig zkVM Shamir (Part 1)</h1>
 
     <p class="lede">
       One high-severity transcript collision that could let an attacker recycle proofs.
@@ -387,12 +381,6 @@ active: blog
     </p>
 
     <div class="hero-meta">
-      <div class="ava">VS</div>
-      <div>
-        <strong style="color:#d4d8e0">Vishal Singh</strong> &nbsp;·&nbsp;
-        <a href="https://github.com/this-vishalsingh">@this-vishalsingh</a>
-      </div>
-      <span>·</span>
       <span>March 28, 2026</span>
       <span>·</span>
       <a href="https://github.com/leanEthereum/leanMultisig/commit/ee7377f9ef5a39cbbd67662c14c2ad6100494426">Fix: commit ee7377f ↗</a>
