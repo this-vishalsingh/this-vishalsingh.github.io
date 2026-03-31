@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Vishal Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-text: #ffffff;
+            --color-text-muted: #666666;
+            --color-accent: #00d4ff;
+            --color-accent-secondary: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(0, 212, 255, 0.15) 0%, rgba(124, 58, 237, 0.1) 40%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .error-code {
+            font-size: clamp(6rem, 20vw, 12rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            90%,
+            100% {
+                text-shadow: none;
+            }
+
+            92% {
+                text-shadow: 2px 0 var(--color-accent), -2px 0 var(--color-accent-secondary);
+            }
+
+            94% {
+                text-shadow: -2px 0 var(--color-accent), 2px 0 var(--color-accent-secondary);
+            }
+
+            96% {
+                text-shadow: 2px 0 var(--color-accent-secondary), -2px 0 var(--color-accent);
+            }
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .code-comment {
+            color: #666;
+        }
+
+        .code-keyword {
+            color: var(--color-accent-secondary);
+        }
+
+        .code-string {
+            color: #4ade80;
+        }
+
+        .code-function {
+            color: var(--color-accent);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+            color: var(--color-bg);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-text a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <div class="content">
+        <div class="error-code">404</div>
+        <h1>Page Not Found</h1>
+        <p>Looks like this page got lost in the zero-knowledge void. The proof doesn't verify here.</p>
+
+        <div class="code-block">
+            <span class="code-comment">// Error: Page verification failed</span><br>
+            <span class="code-keyword">fn</span> <span class="code-function">find_page</span>(path: &str) -> <span
+                class="code-keyword">Result</span>&lt;Page, Error&gt; {<br>
+            &nbsp;&nbsp;<span class="code-keyword">Err</span>(Error::<span class="code-string">"NotFound"</span>)<br>
+            }
+        </div>
+
+        <a href="/" class="btn">
+            ← Return Home
+        </a>
+    </div>
+
+    <div class="footer-text">
+        <a href="https://x.com/thisvishalsingh">@thisvishalsingh</a>
+    </div>
+</body>
+
+</html>
