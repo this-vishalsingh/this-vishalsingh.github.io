@@ -58,7 +58,7 @@ I am most effective when working with systems that are new, unconventional, or p
 - **Smart Contract Security** — Comprehensive reviews of **AMM, Lending protocols, Vaults**, and **Liquid Staking** systems to ensure multi-million dollar TVL remains secure. 🔐
 - **Blockchain Infrastructure** — Auditing of **L1/L2 systems, Rollups, Bridges**, and **zkVMs**, focusing on both implementation and cryptographic integrity. 🏗️
 - **Zero-Knowledge Proofs (ZKP)** — Expertise in securing **Circom, Cairo, and Noir** circuits, as well as core components like **Fiat-Shamir transcripts** and **Polynomial Commitments**. 🧙‍♂️
-- **Multi-Chain Resilience** — Extensive experience securing protocols across **Ethereum, Solana, and Cosmos**, adapting security mental models to diverse execution environments. 🌐
+- **Multi-Chain Resilience** — Expertise in securing protocols across **Ethereum, Solana, and Cosmos**, adapting security mental models to diverse execution environments. 🌐
 
 ---
 
