@@ -375,9 +375,11 @@ active: blog
     <h1>Breaking LeanMultisig zkVM Shamir (Part 1)</h1>
 
     <p class="lede">
-      One high-severity transcript collision that could let an attacker recycle proofs.
-      Two silent overflow bombs hiding inside the same 300-line module.
-      Here is exactly what I found, why it matters, and how to think about it.
+      A formally-verified circuit is only as secure as the transcript feeding it randomness.
+      I found three bugs in LeanMultisig's Fiat-Shamir layer that prove this —
+      one that lets a prover recycle an old proof against a different public input,
+      two that silently corrupt or bypass security checks on 32-bit and max-difficulty targets.
+      All three share the same root cause: trusting the caller to supply well-formed inputs.
     </p>
 
     <div class="hero-meta">
@@ -400,6 +402,7 @@ active: blog
       <li><a href="#m1">M-1 — The bitmask that panics on 32-bit</a></li>
       <li><a href="#m2">M-2 — The overflow that turns PoW into a no-op</a></li>
       <li><a href="#lessons">What I learned — and what you should check in your own code</a></li>
+      <li><a href="#summary">Summary</a></li>
     </ol>
   </div>
 </div>
@@ -412,26 +415,22 @@ active: blog
 <h2 id="story">How I got here</h2>
 
 <p>
-  I had been reading through the leanEthereum codebase for a few days, not looking for anything in particular — just trying to understand how the proving pipeline works end-to-end. The high-level circuits are beautiful. The Lean 4 formalization is genuinely impressive. But the more I read, the more I kept coming back to one folder: <code>crates/backend/fiat-shamir/</code>.
+  I had been reading the leanEthereum codebase for a few days — not looking for anything in particular, just mapping how the proving pipeline works end-to-end. The high-level circuits are beautiful. The Lean 4 formalization is genuinely impressive. But the more I read, the more I kept coming back to one folder: <code>crates/backend/fiat-shamir/</code>.
 </p>
 
 <div class="personal">
-  Every time I look at a ZK system and want to find a bug, I start with the transcript. Not the circuits. Not the constraint system. The transcript. Because circuits can be perfectly specified and formally verified, and the whole system still falls apart if the randomness feeding into it is not unique. The transcript is the one place where a subtle mistake becomes a catastrophic one.
+  Every time I audit a ZK system, I start with the transcript. Not the circuits. Not the constraint system. The transcript. A circuit can be perfectly specified and formally verified, and the whole system still falls apart if the randomness feeding it is not unique. The transcript is the one place where a subtle mistake becomes a catastrophic one.
 </div>
 
 <p>
-  I spent about a day reading <code>challenger.rs</code> and <code>verifier.rs</code>. What I found were three bugs — different in severity, but all rooted in the same underlying assumption: that the caller guarantees well-formed inputs. In a proof system, that is the assumption you should <em>never</em> make.
-</p>
-
-<p>
-  Let me walk you through all of them. But first — some math.
+  A day reading <code>challenger.rs</code> and <code>verifier.rs</code> turned up three bugs — different in severity, all rooted in the same assumption: that callers supply well-formed inputs. In a proof system, that assumption should never hold implicitly.
 </p>
 
 <!-- FIAT-SHAMIR PRIMER -->
 <h2 id="what-is-fs">What Fiat-Shamir actually is — with the math</h2>
 
 <p>
-  Imagine a protocol where a prover $\mathcal{P}$ wants to convince a verifier $\mathcal{V}$ that they know some secret witness $w$ for a public statement $x$, without revealing $w$. The classic structure is a three-move protocol:
+  A prover $\mathcal{P}$ wants to convince a verifier $\mathcal{V}$ of a public statement $x$ without revealing the witness $w$. The classic structure is a three-move protocol:
 </p>
 
 <div class="math-block">
@@ -440,11 +439,11 @@ active: blog
 </div>
 
 <p>
-  The security relies on the verifier sending a <em>random</em> challenge $c$ that the prover cannot predict in advance. But this is interactive — the verifier has to be online and participate. That is useless for on-chain verification.
+  Security rests on the verifier's challenge $c$ being unpredictable. But this requires the verifier to be online — useless for on-chain verification.
 </p>
 
 <p>
-  The <strong>Fiat-Shamir heuristic</strong>, introduced in 1986, replaces the verifier's random challenge with a hash of the transcript so far. The prover computes:
+  The <strong>Fiat-Shamir heuristic</strong> (1986) removes this requirement by replacing the live challenge with a hash of the transcript. The prover computes:
 </p>
 
 <div class="math-block">
@@ -453,11 +452,11 @@ active: blog
 </div>
 
 <p>
-  where $H$ is a collision-resistant hash function (or a random oracle in the security proof), $\text{ctx}$ is the public context (the statement $x$, protocol parameters, domain separators), and $a$ is the prover's commitment. The challenge is now deterministic and non-interactive.
+  Here $H$ is a collision-resistant hash, $\text{ctx}$ is the public context (statement, protocol parameters, domain separators), and $a$ is the commitment. The challenge is now deterministic.
 </p>
 
 <p>
-  In a multi-round protocol like WHIR, this generalises to a transcript $\tau$ that grows with each round:
+  In a multi-round protocol like WHIR, the transcript $\tau$ grows with each round:
 </p>
 
 <div class="math-block">
@@ -468,7 +467,7 @@ active: blog
 </div>
 
 <p>
-  The security of this construction rests on one critical property. The hash must be <em>injective</em> with respect to the sequence of absorbed values. Formally:
+  The whole construction depends on one property: the hash must be <em>injective</em> over the sequence of absorbed values.
 </p>
 
 <div class="math-block">
@@ -477,18 +476,14 @@ active: blog
 </div>
 
 <p>
-  If two different sequences $\mathbf{v} \neq \mathbf{v}'$ can produce the same hash state, then two different proofs produce the same challenges, and the proof is no longer bound to a unique statement. That is the definition of <strong>transcript malleability</strong>, and it is exactly what bug H-4 introduces.
+  If two distinct sequences produce the same hash state, two different proofs generate identical challenges — the proof is no longer bound to a unique statement. This is <strong>transcript malleability</strong>, and it is exactly what H-4 introduces.
 </p>
 
 <!-- SPONGE -->
 <h2 id="sponge">How the sponge absorbs scalars</h2>
 
 <p>
-  leanMultisig uses a Poseidon-based sponge construction as its hash function. Before we look at the bug, let us understand how the sponge works normally.
-</p>
-
-<p>
-  A sponge has an internal state of $n$ field elements. It is split into two parts: the <strong>rate</strong> $r$ (the public part that absorbs input) and the <strong>capacity</strong> $c$ (the private part that provides security). Each time we absorb $r$ elements, we apply a permutation $\pi$ to mix them into the state:
+  leanMultisig hashes with a Poseidon sponge. The sponge splits its internal state of $n$ field elements into two parts: the <strong>rate</strong> $r$ (the public absorption lane) and the <strong>capacity</strong> $c$ (the private security domain). Every time $r$ elements are absorbed, a permutation $\pi$ mixes them into the full state:
 </p>
 
 <div class="diagram-wrap">
@@ -584,7 +579,7 @@ active: blog
   <text x="602" y="149" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#991b1b">τ = τ'</text>
 </svg>
 <div class="diagram-caption">
-  Figure 2: Input A and Input B produce <em>identical</em> sponge buffers after chunk-padding.
+  Figure 2: Both inputs pass through the same <code>observe_scalars</code> path. Input A has three elements; the fourth slot is zero-padded automatically by the chunking loop. Input B provides four elements, the last explicitly zero. The sponge sees identical buffers. No attacker-supplied zero is needed — the collision happens naturally whenever the input length is not a multiple of <code>RATE</code>.
 </div>
 </div>
 
@@ -618,7 +613,17 @@ active: blog
 </code></pre>
 
 <p>
-  The code is idiomatic Rust. It reads naturally. And it is wrong in a subtle but devastating way.
+  The code is idiomatic Rust. It reads naturally. It is wrong in a subtle but devastating way.
+</p>
+
+<h3>Why this is a security violation</h3>
+
+<p>
+  When the input length is not a multiple of <code>RATE</code>, the last chunk is zero-padded. A proof for public input <code>[x₁, x₂, x₃]</code> absorbs <code>[x₁, x₂, x₃, 0]</code> into the sponge. A proof for <code>[x₁, x₂, x₃, 0]</code> — a different statement, four explicit elements — absorbs the same buffer. Both produce identical challenge sequences.
+</p>
+
+<p>
+  The consequence: a proof for statement A is computationally valid for statement B whenever B's input is a zero-extended version of A's. On a multisig contract, an attacker could replay a valid approval for one signer set as if it were an approval for a padded superset — a completely different authorization.
 </p>
 
 <h3>The fix</h3>
@@ -635,8 +640,12 @@ prover_state.<span class="fn">add_base_scalars</span>(&amp;[
 </code></pre>
 
 <p>
-  By absorbing <code>public_input.len()</code> into the transcript <em>before</em> the values, the construction becomes injective again.
+  Absorbing <code>public_input.len()</code> before the values makes this call-site injective — inputs of different lengths now hash to different states.
 </p>
+
+<div class="callout">
+  <span class="icon">⚠️</span> <strong>Nuance:</strong> the fix is at the <em>call-site</em> in <code>prove_execution.rs</code>, not inside <code>observe_scalars</code>. The underlying API still zero-pads silently. Any future caller that omits the length prefix reintroduces the bug. A more defensive fix puts the length prefix inside <code>observe_scalars</code> so it cannot be forgotten.
+</div>
 
 <!-- M-1 -->
 <h2 id="m1">M-1 — The bitmask that panics on 32-bit</h2>
@@ -668,6 +677,36 @@ prover_state.<span class="fn">add_base_scalars</span>(&amp;[
 }
 </code></pre>
 
+<h3>Why this only breaks on 32-bit</h3>
+
+<p>
+  The literal <code>1</code> in <code>1 &lt;&lt; bits</code> is inferred as <code>usize</code>. On a 64-bit host every shift up to 63 succeeds. On a 32-bit target — WASM runtimes, embedded provers, some zkVM environments — <code>usize</code> is 32 bits, so any <code>bits &gt;= 32</code> overflows:
+</p>
+
+<ul style="font-family:'Outfit',sans-serif;font-size:16px;line-height:1.8;">
+  <li>In <strong>debug builds</strong>: Rust panics with <em>"attempt to shift left with overflow"</em>.</li>
+  <li>In <strong>release builds</strong>: the shift wraps silently, corrupting the bitmask with no error signal.</li>
+</ul>
+
+<p>
+  The guard <code>assert!(bits &lt; F::bits())</code> checks against the <em>field</em> width — 64 for a 64-bit field. Values up to 63 pass. On 32-bit that is not enough.
+</p>
+
+<h3>The fix</h3>
+
+<p>
+  Shift in <code>u64</code> — always 64 bits wide — then cast:
+</p>
+
+<pre><code><span class="kw">let</span> mask = (<span class="num">1u64</span> &lt;&lt; bits) - <span class="num">1</span>;
+<span class="kw">let</span> rand_usize = fe.<span class="fn">as_canonical_u64</span>() &amp; mask;
+res.<span class="fn">push</span>(rand_usize <span class="kw">as</span> <span class="typ">usize</span>);
+</code></pre>
+
+<p>
+  The existing assert guarantees <code>bits &lt;= 63</code>, so no additional guard is needed. One character — <code>1</code> becomes <code>1u64</code> — eliminates the entire class of 32-bit overflow risk.
+</p>
+
 <!-- M-2 -->
 <h2 id="m2">M-2 — The overflow that turns PoW into a no-op</h2>
 
@@ -680,6 +719,10 @@ prover_state.<span class="fn">add_base_scalars</span>(&amp;[
   <div class="finding-file">crates/backend/fiat-shamir/src/verifier.rs</div>
 </div>
 
+<div class="personal">
+  M-1 crashes or silently corrupts. M-2 is quieter and more dangerous — the verifier accepts every proof without complaint, at exactly the security level where you need it most.
+</div>
+
 <h3>The vulnerable code</h3>
 
 <pre><code><span class="kw">if</span> self.challenger.state[<span class="num">0</span>].<span class="fn">as_canonical_u64</span>() &amp; ((<span class="num">1</span> &lt;&lt; bits) - <span class="num">1</span>) != <span class="num">0</span> {
@@ -687,15 +730,41 @@ prover_state.<span class="fn">add_base_scalars</span>(&amp;[
 }
 </code></pre>
 
+<p>
+  At first glance this looks correct: verify that the leading <code>bits</code> of the state are zero, reject otherwise. But an integer edge case turns the whole check into dead code.
+</p>
+
+<h3>How <code>bits = 64</code> is reached</h3>
+
+<p>
+  <code>bits</code> is read directly from the WHIR configuration. At maximum security the field is 64-bit, so the code sets <code>bits = F::bits()</code> — exactly 64. This is not a caller mistake; it is the intended value at the highest grinding difficulty.
+</p>
+
 <div class="callout danger">
-  <span class="icon">⚠️</span> The grinding check silently accepts <em>any</em> proof when <code>bits = 64</code> because the mask becomes zero.
+  <span class="icon">⚠️</span> When <code>bits = 64</code>, the expression <code>(1u64 &lt;&lt; 64) - 1</code> wraps to <code>0</code> in Rust release mode. The bitmask is <code>0</code>, so <code>state[0] &amp; 0 == 0</code> is always <code>true</code>, the inequality <code>!= 0</code> is always <code>false</code>, and the check <em>never</em> rejects. Any nonce passes. The grinding requirement — the main cost imposed on a WHIR prover to deter spam — is completely bypassed at the very difficulty level where it matters most.
 </div>
+
+<h3>The fix</h3>
+
+<p>
+  Guard the shift explicitly so that <code>bits = 64</code> produces the correct all-ones mask instead of wrapping to zero:
+</p>
+
+<pre><code><span class="kw">let</span> mask: <span class="typ">u64</span> = <span class="kw">if</span> bits &gt;= <span class="num">64</span> {
+    <span class="typ">u64</span>::MAX
+} <span class="kw">else</span> {
+    (<span class="num">1u64</span> &lt;&lt; bits) - <span class="num">1</span>
+};
+<span class="kw">if</span> self.challenger.state[<span class="num">0</span>].<span class="fn">as_canonical_u64</span>() &amp; mask != <span class="num">0</span> {
+    <span class="kw">return</span> <span class="typ">Err</span>(<span class="typ">ProofError</span>::InvalidGrindingWitness);
+}
+</code></pre>
 
 <!-- LESSONS -->
 <h2 id="lessons">What I learned — and what you should check in your own code</h2>
 
 <p>
-  Finding these bugs does not mean the team was careless. All three are genuinely subtle.
+  None of these bugs reflect carelessness. All three are invisible to standard testing: H-4 requires two crafted inputs, M-1 only fires on non-x86-64 targets, M-2 only strikes at an exact parameter boundary. The lesson is not to test harder — it is to build APIs that make the mistakes structurally impossible.
 </p>
 
 <h3>1. The Fiat-Shamir injectivity checklist</h3>
@@ -705,6 +774,22 @@ prover_state.<span class="fn">add_base_scalars</span>(&amp;[
   <strong>✓</strong> Are domain separators used? <br/>
   <strong>✓</strong> Can two different inputs reach the same transcript state?
 </div>
+
+<p>
+  On domain separators: <code>leanMultisig</code> initialises the sponge with a fixed protocol tag, which blocks cross-protocol replay. But the tag is a compile-time constant — it is not parameterised by circuit shape or WHIR folding configuration. Two proofs with different circuit sizes but the same field width can share an identical opening prefix. The separator works at the protocol boundary; it does not work at the instance level. That is a separate, lower-severity issue, but worth auditing in any fork.
+</p>
+
+<h3>2. Encode widths explicitly — never trust type inference for security arithmetic</h3>
+
+<p>
+  M-1 and M-2 are the same bug in different clothes: a shift on an integer whose width is platform-inferred. The fix is identical in both cases: write the type. <code>1u64</code>, not <code>1</code>. Any arithmetic touching security parameters — bit widths, difficulty targets, field sizes — should use fixed-width types. The compiler will not warn you when platform-dependent sizes collide with security boundaries.
+</p>
+
+<h3>3. Test at the exact documented limit, not just below it</h3>
+
+<p>
+  M-2 was only reachable at <code>bits = F::bits()</code> — the maximum. A test at <code>bits = 63</code> passes. A test at <code>bits = 64</code> catches the bug immediately. Whenever a function accepts a parameter with a documented maximum, add a test at that exact value. This applies to any bit-count, difficulty level, or field-size-derived input.
+</p>
 
 <hr/>
 
