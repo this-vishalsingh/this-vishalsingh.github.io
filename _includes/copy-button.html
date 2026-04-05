@@ -1,0 +1,48 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const codeBlocks = document.querySelectorAll('pre');
+  codeBlocks.forEach(function(pre) {
+    if (pre.querySelector('.copy-btn')) return;
+
+    pre.style.position = 'relative';
+    const button = document.createElement('button');
+    button.className = 'copy-btn';
+    button.innerText = 'Copy';
+    button.style.position = 'absolute';
+    button.style.top = '8px';
+    button.style.right = '8px';
+    button.style.padding = '4px 8px';
+    button.style.fontSize = '12px';
+    button.style.fontFamily = "'Inter', sans-serif";
+    button.style.fontWeight = "600";
+    button.style.background = '#e2e2e2';
+    button.style.border = '1px solid #ccc';
+    button.style.borderRadius = '4px';
+    button.style.cursor = 'pointer';
+    button.style.color = '#333';
+    button.style.opacity = '0';
+    button.style.transition = 'opacity 0.2s';
+    
+    pre.addEventListener('mouseenter', function() { button.style.opacity = '1'; });
+    pre.addEventListener('mouseleave', function() { button.style.opacity = '0'; });
+    
+    button.addEventListener('click', function() {
+      const code = pre.querySelector('code');
+      const text = code ? code.innerText : pre.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerText = 'Copied!';
+        button.style.background = '#8de0a6';
+        button.style.borderColor = '#52c47a';
+        button.style.color = '#111';
+        setTimeout(function() {
+          button.innerText = 'Copy';
+          button.style.background = '#e2e2e2';
+          button.style.borderColor = '#ccc';
+          button.style.color = '#333';
+        }, 2000);
+      });
+    });
+    pre.appendChild(button);
+  });
+});
+</script>
