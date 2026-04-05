@@ -1,13 +1,12 @@
 ---
-layout: default
-title: My Security Audit Process
+layout: post
+title: "My Security Audit Process"
+description: "A transparent look at how I work with clients to secure their protocols."
+date: 2026-03-21
+tags: [audit]
 permalink: /blog/audit-process/
 active: blog
 ---
-
-# My Security Audit Process
-
-A transparent look at how I work with clients to secure their protocols.
 
 ---
 

@@ -1,10 +1,12 @@
 ---
-layout: default
-title: Cairo Security Vulnerabilities Checklist
+layout: post
+title: "Cairo Security Vulnerabilities Checklist"
+description: "A comprehensive checklist of critical security vulnerabilities in Cairo and StarkNet smart contracts."
+date: 2026-03-24
+tags: [cairo, vuln, audit]
 permalink: /blog/cairo-security-checklist/
+active: blog
 ---
-
-# Cairo Security Vulnerabilities Checklist
 
 <div style="text-align: center; margin: 2rem 0;">
   <img src="https://hackmd.io/_uploads/S1MIjHuPZg.png" alt="Cairo Security Checklist" style="width: 100%; max-width: 600px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">

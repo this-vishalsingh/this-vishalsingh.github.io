@@ -1,13 +1,11 @@
 ---
-layout: default
-title: FHE Protocol Security Audit Checklist
+layout: post
+title: "FHE Protocol Security Audit Checklist"
+description: "A comprehensive security audit checklist for Fully Homomorphic Encryption protocols, a research compilation."
+date: 2026-03-22
+tags: [fhe, audit]
 permalink: /blog/fhe-audit-checklist/
----
-
-# FHE Protocol Security Audit Checklist
-
-A comprehensive security audit checklist for Fully Homomorphic Encryption protocols, a research compilation.
-
+active: blog
 ---
 
 ## Table of Contents

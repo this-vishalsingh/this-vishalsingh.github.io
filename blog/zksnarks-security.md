@@ -1,10 +1,12 @@
 ---
-layout: default
-title: ZK-SNARKs Security - Vulnerabilities and Root Causes
-permalink: /blog/zksnarks-security
+layout: post
+title: "ZK-SNARKs Security - Vulnerabilities and Root Causes"
+description: "A comprehensive overview of common vulnerabilities and root causes in ZK-SNARK circuit implementations."
+date: 2026-03-23
+tags: [zk, vuln]
+permalink: /blog/zksnarks-security/
+active: blog
 ---
-
-A comprehensive overview of common vulnerabilities and root causes in ZK-SNARK circuit implementations.
 
 ---
 

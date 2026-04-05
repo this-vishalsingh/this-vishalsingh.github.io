@@ -5,14 +5,9 @@ active: audits
 permalink: /audits/
 ---
 
-Security assessments and competitive performance. This page highlights my audit portfolio, including public security contest results and private infrastructure reviews.
+*Security assessments*
 
-*For a detailed look at my security audit process, please see [My Security Audit Process](/blog/audit-process/).*
-
-*For engineering projects and open-source development (e.g., [ZP1](https://github.com/ZippelLabs/ZP1), ZSentinel, etc.), please visit the [Development](/development/) page.*
-
-The following reflects my security research, public vulnerability findings, and professional audit portfolio across Zero-Knowledge systems, smart contracts, and blockchain infrastructure.
-
+The following reflects my security research in smart contract, blockchain infrastructure, zero-knowledge proof and advanced cryptography for MPC, FHE, and Post-Quantum systems
 <br>
 
 ### 🔓 Vulnerabilities Disclosure (Public Cryptographic Findings)
@@ -22,7 +17,7 @@ The following reflects my security research, public vulnerability findings, and 
 | **leanEthereum / leanSig** | Feb 2026 | **1 High** — Lack of completeness in signature scheme or proof verification logic. |
 | **leanEthereum / leanMultisig** (zkVM) | Feb/March 2026 | **[1 High, 2 Medium](/blog/lean-multisig-bugs/)** — Transcript Collisions from Zero-Padded Scalar Absorption (H-4) in Fiat-Shamir backend. |
 | **[redacted]** (zkVM) | Jan 2026 | **1 Critical** — Soundness impact identified in core proof verification logic. |
-| **[redacted]** (FHE) | Jan 2026 | **1 High** — Vulnerability in ciphertext rotation and noise management. (Restricted Disclosure) |
+| **[redacted]** (FHE) | Jan 2026 | **1 High, 2 Medium** — Ciphertext rotation flaw; predictable on-chain randomness. (Restricted Disclosure) |
 | **GOATNetwork** | Jan 2026 | **1 High** — Incorrect slash fraction check allowing negative slashing, validator inflation, and token siphoning. |
 
 <br>

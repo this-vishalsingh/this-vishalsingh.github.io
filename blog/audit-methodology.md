@@ -1,14 +1,11 @@
 ---
-layout: default
-title: My Security Assessment Methodology
+layout: post
+title: "My Security Assessment Methodology"
+description: "A transparent look at how I work with clients to secure their protocols."
+date: 2026-03-20
+tags: [audit]
 permalink: /blog/audit-methodology/
 active: blog
----
-
-# My Security Assessment Methodology
-
-A transparent look at how I work with clients to secure their protocols.
-
 ---
 
 ## 1. Audit Preparation & Scope Definition

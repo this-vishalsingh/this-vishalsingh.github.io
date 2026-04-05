@@ -1,14 +1,12 @@
 ---
-layout: default
-title: Nova and CycleFold
+layout: post
+title: "Nova and CycleFold"
+description: "Nova turns “prove a long computation” into “prove one step and fold it into a running claim,” using a folding scheme for committed relaxed R1CS. CycleFold is a clean way to use a cycle of curves so that these elliptic-curve costs don’t bloat the recursive verifier circuit."
+date: 2026-03-31
+tags: [zk, research]
 permalink: /blog/nova-cyclefold/
+active: blog
 ---
-
-Contributors of this article: 2 SRs(including me)
-
-# Nova and CycleFold
-
-> **TL;DR:** Nova turns “prove a long computation” into “prove one step and fold it into a running claim,” using a folding scheme for **committed relaxed R1CS**. The catch is that recursion forces elliptic-curve operations into a circuit, and those operations can become **non-native** and expensive. **CycleFold** is a clean way to use a **cycle of curves** so that (most of) those elliptic-curve costs don’t bloat the recursive verifier circuit.
 
 ## The problem Nova solves: IVC
 To efficiently prove repeated application of a step function,y = F ^(k)^(x) = F(F(F(x))),
